@@ -49,17 +49,17 @@ create_vector <- function(month) {
   }
 }
 
-create_vector("09")
+create_vector("03")
 
 View(df)
-print(any(df$`09` == "07", na.rm = TRUE))
+print(any(df$`03` == "07", na.rm = TRUE))
 
 df_day <- data.frame(matrix(ncol = ncol(df), nrow = 0))
 colnames(df_day) <- colnames(df)
 
 for (n in 1:nrow(df)) {
 
-  if (!is.na(df$`09`[n]) && df$`09`[n] == "07") {
+  if (!is.na(df$`03`[n]) && df$`03`[n] == "10") {
 
     row_to_add <- df[n, , drop = FALSE]
 
@@ -161,6 +161,7 @@ i
 Unique_Whales_Dataframe$stock <- stocks
 
 
+
 j <- ""
 for (n in 1:nrow(Unique_Whales_Dataframe)) {
 
@@ -202,9 +203,5 @@ stocks <- c(Money_Data_Categorized_Unique_Sector_Sub,'Gold', 'Oil & Gas Refining
 Money_Data_Money <- read_csv("constituents-financials.csv")
 View(Money_Data_Money)
 
-
-find_specific_stock <- function(broad) {
-
-}
 
 #have each whale associated with a group of stocks (normal to crazy)
