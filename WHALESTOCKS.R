@@ -1,12 +1,24 @@
+#Initalize packages and shit
 library(readr)
 install.packages('geosphere')
 library(geosphere)
 
 
 Blue_Whale_Data <- read_csv("Blue whales Eastern North Pacific 1993-2008 - Argos data.csv")
-View(Blue_Whale_Data)
-Blue_Whale_Data$timestamp[1:10]
-substr(Blue_Whale_Data$timestamp[1], 6, 10)
+Unique_Whales_Vector <- unique(Blue_Whale_Data$`tag-local-identifier`)
+Unique_Whales_Dataframe <- data.frame(Unique_Whales_Vector)
+Money_Data_Categorized <- read_csv("constituents.csv")
+Money_Data_Categorized_Unique_Sector <- unique(Money_Data_Categorized$`GICS Sector`)
+Money_Data_Categorized_Unique_Sector_Sub <- unique(Money_Data_Categorized$`GICS Sub-Industry`)
+
+stocks <- c(Money_Data_Categorized_Unique_Sector_Sub,'Gold', 'Oil & Gas Refining & Marketing',
+            'Copper', 'Biotechnology', 'Building Products', 'Specialty Chemicals', 'Tobacco',
+            'Telecom Tower REITs', 'Human Resource & Employment Services', 'Brewers',
+            'Steel', 'Other Specialty Retail', 'Distributors', 'Metal, Glass & Plastic Containers')
+
+# View(Blue_Whale_Data)
+# Blue_Whale_Data$timestamp[1:10]
+# substr(Blue_Whale_Data$timestamp[1], 6, 10)
 
 
 
@@ -17,7 +29,7 @@ substr(Blue_Whale_Data$timestamp[1], 6, 10)
 # vector <- c(vector, substr(Blue_Whale_Data$timestamp[2], 6, 10))
 # substr(Blue_Whale_Data$timestamp[2], 6, 7) == "08"
 
-
+get_whale_stock1 <- function(month_filter, day_filter) {
 
 df <- data.frame(matrix(ncol = 15, nrow = 0))
 colnames(df) <- c("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "Whale", "Lat", "Long")
@@ -25,6 +37,7 @@ colnames(df) <- c("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "1
 na_rows <- data.frame(matrix(NA, nrow = 1, ncol = 15))
 colnames(na_rows) <- colnames(df)
 df <- rbind(na_rows, df)
+
 
 
 create_vector <- function(month) {
@@ -48,18 +61,17 @@ create_vector <- function(month) {
     }
   }
 }
+create_vector(month_filter)
 
-create_vector("03")
-
-View(df)
-print(any(df$`03` == "07", na.rm = TRUE))
+# View(df)
+# print(any(df$`03` == "11", na.rm = TRUE))
 
 df_day <- data.frame(matrix(ncol = ncol(df), nrow = 0))
 colnames(df_day) <- colnames(df)
 
 for (n in 1:nrow(df)) {
 
-  if (!is.na(df$`03`[n]) && df$`03`[n] == "10") {
+  if (!is.na(df[[month_filter]][n]) && df[[month_filter]][n] == day_filter) {
 
     row_to_add <- df[n, , drop = FALSE]
 
@@ -68,7 +80,6 @@ for (n in 1:nrow(df)) {
 
   }
 }
-View(df_day)
 
 # Blue_Whale_Data$`location-long`[[3]]
 # df_day$`Lat`[[1]]
@@ -143,7 +154,7 @@ for (whale_id in unique_whales) {
 }
 
 # 4. View the results dataframe
-View(whale_locations)
+# View(whale_locations)
 
 long_dist <- max(whale_locations$Dist, na.rm = TRUE)
 i <- ""
@@ -175,33 +186,23 @@ stonk <- which(Money_Data_Money$Sector == j)
 picked_stock <- stonk[sample(1:length(stonk), 1)]
 
 FINAL_STOCK <- Money_Data_Money$Name[picked_stock]
+print(FINAL_STOCK)
+}
 
-
+get_whale_stock1("03", "11")
 
 # Make data frame of every month with days, associated with whale
 # Pick day, and then sort by whale. Then pick one at random due to undecided factor
 # maybe due to biggest displacement by day?
 # whale is equal to whatever stock, and then the amount of stock bought is due to
 # the amount of distance? (or from second place)
-Unique_Whales_Vector <- unique(Blue_Whale_Data$`tag-local-identifier`)
-  Unique_Whales_Dataframe <- data.frame(Unique_Whales_Vector)
-View(Unique_Whales_Dataframe)
 
 # Unique_Whales_Dataframe$Money_Data_Categorized_Unique_Sector_Sub <- c(Money_Data_Categorized_Unique_Sector_Sub, rep(NA, nrow(df)-length(Money_Data_Categorized_Unique_Sector_Sub)))
 
-Money_Data_Categorized <- read_csv("constituents.csv")
-View(Money_Data_Categorized)
-Money_Data_Categorized_Unique_Sector <- unique(Money_Data_Categorized$`GICS Sector`)
-Money_Data_Categorized_Unique_Sector_Sub <- unique(Money_Data_Categorized$`GICS Sub-Industry`)
-
-stocks <- c(Money_Data_Categorized_Unique_Sector_Sub,'Gold', 'Oil & Gas Refining & Marketing',
-            'Copper', 'Biotechnology', 'Building Products', 'Specialty Chemicals', 'Tobacco',
-            'Telecom Tower REITs', 'Human Resource & Employment Services', 'Brewers',
-            'Steel', 'Other Specialty Retail', 'Distributors', 'Metal, Glass & Plastic Containers')
 
 
-Money_Data_Money <- read_csv("constituents-financials.csv")
-View(Money_Data_Money)
+# Money_Data_Money <- read_csv("constituents-financials.csv")
+# View(Money_Data_Money)
 
 
 #have each whale associated with a group of stocks (normal to crazy)
