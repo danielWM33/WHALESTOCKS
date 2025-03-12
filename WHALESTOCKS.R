@@ -1,16 +1,18 @@
-#Initalize packages and shit
+#Initalize packages
 # install.packages('geosphere')
 library(readr)
 library(geosphere)
 
-
+# get the data we need, stocks, whale data
 Blue_Whale_Data <- read_csv("Blue whales Eastern North Pacific 1993-2008 - Argos data.csv")
 Unique_Whales_Vector <- unique(Blue_Whale_Data$`tag-local-identifier`)
 Unique_Whales_Dataframe <- data.frame(Unique_Whales_Vector)
 Money_Data_Categorized <- read_csv("constituents.csv")
 Money_Data_Categorized_Unique_Sector <- unique(Money_Data_Categorized$`GICS Sector`)
 Money_Data_Categorized_Unique_Sector_Sub <- unique(Money_Data_Categorized$`GICS Sub-Industry`)
+Money_Data_Money <- read_csv("constituents-financials.csv")
 
+#adding more stocks to list
 stocks <- c(Money_Data_Categorized_Unique_Sector_Sub,'Gold', 'Oil & Gas Refining & Marketing',
             'Copper', 'Biotechnology', 'Building Products', 'Specialty Chemicals', 'Tobacco',
             'Telecom Tower REITs', 'Human Resource & Employment Services', 'Brewers',
@@ -29,7 +31,7 @@ stocks <- c(Money_Data_Categorized_Unique_Sector_Sub,'Gold', 'Oil & Gas Refining
 # vector <- c(vector, substr(Blue_Whale_Data$timestamp[2], 6, 10))
 # substr(Blue_Whale_Data$timestamp[2], 6, 7) == "08"
 
-#Use Strings
+# Function to get stock!
 get_whale_stock1 <- function(month_filter, day_filter) {
 
 df <- data.frame(matrix(ncol = 15, nrow = 0))
@@ -118,7 +120,7 @@ for (whale_id in unique_whales) {
 
   # Ensure there is data for this whale before proceeding
   if(nrow(whale_data) > 0) {
-    # Extract latitude and longitude values, removing NAs if any
+    # Extract latitude and longitude values, removing NA
     whale_lats <- na.omit(whale_data$Lat)
     whale_longs <- na.omit(whale_data$Long)
 
@@ -148,7 +150,7 @@ for (whale_id in unique_whales) {
       First_Long = first_long,
       Last_Lat = last_lat,
       Last_Long = last_long,
-      Dist = distHaversine(first_coords, last_coords, r = 6378137)
+      Dist = distHaversine(first_coords, last_coords, r = 6378137) # geosphere package)
     )
     whale_locations <- rbind(whale_locations, new_row)
   }
@@ -190,7 +192,8 @@ FINAL_STOCK <- Money_Data_Money$Name[picked_stock]
 print(FINAL_STOCK)
 }
 
-get_whale_stock1("03", "11")
+#Use Strings
+get_whale_stock1("03", "12")
 
 # Make data frame of every month with days, associated with whale
 # Pick day, and then sort by whale. Then pick one at random due to undecided factor
@@ -202,7 +205,6 @@ get_whale_stock1("03", "11")
 
 
 
-# Money_Data_Money <- read_csv("constituents-financials.csv")
 # View(Money_Data_Money)
 
 
