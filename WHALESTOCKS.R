@@ -1,6 +1,6 @@
 #Initalize packages and shit
+# install.packages('geosphere')
 library(readr)
-install.packages('geosphere')
 library(geosphere)
 
 
@@ -29,6 +29,7 @@ stocks <- c(Money_Data_Categorized_Unique_Sector_Sub,'Gold', 'Oil & Gas Refining
 # vector <- c(vector, substr(Blue_Whale_Data$timestamp[2], 6, 10))
 # substr(Blue_Whale_Data$timestamp[2], 6, 7) == "08"
 
+#Use Strings
 get_whale_stock1 <- function(month_filter, day_filter) {
 
 df <- data.frame(matrix(ncol = 15, nrow = 0))
