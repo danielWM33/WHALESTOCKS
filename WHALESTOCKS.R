@@ -193,7 +193,7 @@ print(FINAL_STOCK)
 }
 
 #Use Strings
-get_whale_stock1("03", "12")
+get_whale_stock1("03", "13")
 
 # Make data frame of every month with days, associated with whale
 # Pick day, and then sort by whale. Then pick one at random due to undecided factor
