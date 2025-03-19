@@ -368,18 +368,19 @@ get_whale_stock1 <- function(month_filter, day_filter) {
   }
 
   # print which whale corresponds
-  print(Unique_Whales_Dataframe$Names[(which(Unique_Whales_Dataframe$Unique_Whales_Vector == i))])
-  print("picks...")
+  cat(Unique_Whales_Dataframe$Names[(which(Unique_Whales_Dataframe$Unique_Whales_Vector == i))])
+  cat(" picks ")
 
   stonk <- which(Money_Data_Money$Sector == j)
   picked_stock <- stonk[sample(1:length(stonk), 1)]
 
   FINAL_STOCK <- Money_Data_Money$Name[picked_stock]
-  print(FINAL_STOCK)
+  cat(FINAL_STOCK)
+  cat(" !")
 }
 
 #Use Strings
-get_whale_stock1("03", "18")
+get_whale_stock1("03", "19")
 
 # Make data frame of every month with days, associated with whale
 # Pick day, and then sort by whale. Then pick one at random due to undecided factor
