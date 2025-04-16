@@ -1,7 +1,11 @@
 #Initalize packages
 # install.packages('geosphere')
+# install.packages("RobinHood")
 library(readr)
 library(geosphere)
+library(ggplot2)
+library(RobinHood)
+
 
 # get the data we need, stocks, whale data
 Blue_Whale_Data <- read_csv("Blue whales Eastern North Pacific 1993-2008 - Argos data.csv")
@@ -338,6 +342,7 @@ get_whale_stock1 <- function(month_filter, day_filter) {
         Dist = distHaversine(first_coords, last_coords, r = 6378137) # geosphere package)
       )
       whale_locations <- rbind(whale_locations, new_row)
+      print(whale_locations)
     }
   }
 
@@ -377,10 +382,12 @@ get_whale_stock1 <- function(month_filter, day_filter) {
   FINAL_STOCK <- Money_Data_Money$Name[picked_stock]
   cat(FINAL_STOCK)
   cat(" !")
+
+  # ggplot()
 }
 
 #Use Strings
-get_whale_stock1("03", "19")
+get_whale_stock1("04", "01")
 
 # Make data frame of every month with days, associated with whale
 # Pick day, and then sort by whale. Then pick one at random due to undecided factor
